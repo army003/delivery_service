@@ -1,0 +1,7 @@
+[defaults]
+url=https://sentry.globerce.com/
+org=sentry
+project=non_resident_front
+
+[auth]
+token=eb7418f1f7ab422985012e78c229fe0f2dbceec29c904d84aa467ee13949e1bd

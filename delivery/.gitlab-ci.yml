@@ -1,0 +1,80 @@
+stages:
+  - sonarqube
+  - build
+  - deploy
+
+variables:
+  DOCKER_BUILDKIT: 1
+  LATEST_IMAGE: $CI_REGISTRY_IMAGE:latest
+  IMAGE: $CI_REGISTRY_IMAGE
+  TAG: $CI_BUILD_REF_SLUG-$CI_PIPELINE_ID-$CI_COMMIT_SHORT_SHA
+
+include:
+  - project: 'ci-tools/templates'
+    ref: master
+    file: '/secure/sonarqube.yml'
+
+docker-image-dev:
+  stage: build
+  image: docker:20.10
+  tags:
+    - docker
+  only: ['dev']
+  before_script:
+    - docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN $CI_REGISTRY
+  script:
+    - docker pull $LATEST_IMAGE || true
+    - docker build --cache-from $LATEST_IMAGE -t $IMAGE:$TAG .
+    - docker tag $IMAGE:$TAG $CI_REGISTRY_IMAGE
+    - docker push $IMAGE
+    - docker push $IMAGE:$TAG
+  after_script:
+    - docker rmi $IMAGE
+    - docker rmi $IMAGE:$TAG
+
+docker-image-prod:
+  stage: build
+  image: docker:20.10
+  tags:
+    - docker
+  only: ['main']
+  before_script:
+    - docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN $CI_REGISTRY
+  script:
+    - docker pull $LATEST_IMAGE || true
+    - docker build --cache-from $LATEST_IMAGE -t $IMAGE:$TAG .
+    - docker tag $IMAGE:$TAG $CI_REGISTRY_IMAGE
+    - docker push $IMAGE
+    - docker push $IMAGE:$TAG
+  after_script:
+    - docker rmi $IMAGE
+    - docker rmi $IMAGE:$TAG
+
+k8s-deploy-dev:
+  image: gitlab.globerce.com:5050/docker-images/helmsman:3.6.2
+  stage: deploy
+  tags:
+    - docker
+  only: ['dev']
+  script:
+    - sed -i "s@ENVIRONMENT@dev@g" manifest-dev.yml
+    - sed -i "s@IMAGE_TO_REPLACE:TAG@$CI_REGISTRY_IMAGE:$TAG@g" manifest-dev.yml
+    - mkdir -p ~/.kube
+    - echo ${KUBECONFIG_DEV} | base64 -d > ~/.kube/config
+    - helm repo update
+    - helmsman -keep-untracked-releases -update-deps -apply -f manifest-dev.yml
+
+k8s-deploy-prod:
+  image: gitlab.globerce.com:5050/docker-images/helmsman:3.6.2
+  stage: deploy
+  tags:
+    - ipoteka
+  only: ['main']
+  when: manual
+  script:
+    - sed -i "s@ENVIRONMENT@prod@g" manifest-prod.yml
+    - sed -i "s@IMAGE_TO_REPLACE:TAG@$CI_REGISTRY_IMAGE:$TAG@g" manifest-prod.yml
+    - mkdir -p ~/.kube
+    - echo ${KUBECONFIG_PROD} | base64 -d > ~/.kube/config
+    - helm repo update
+    - helmsman -keep-untracked-releases -update-deps -apply -f manifest-prod.yml
