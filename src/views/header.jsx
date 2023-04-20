@@ -20,9 +20,9 @@ function Header() {
         </div>
         <div tw='relative'>
           <CiShoppingCart color='#000' size={40} tw='cursor-pointer' />
-          <span tw='bg-secondary border-[1px] border-black w-[23px] h-[23px] rounded-full absolute flex justify-center items-center -top-0 -right-1'>
+          {/* <span tw='bg-secondary border-[1px] border-black w-[23px] h-[23px] rounded-full absolute flex justify-center items-center -top-0 -right-1'>
             2
-          </span>
+          </span> */}
         </div>
       </div>
     </div>

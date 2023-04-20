@@ -10,7 +10,7 @@ function Layout() {
   return (
     <div tw='h-[100vh] flex flex-col justify-between'>
       <Header />
-      <div tw='max-w-[950px] mx-auto'>
+      <div tw='max-w-[1000px] mx-auto'>
         <Outlet />
       </div>
       <Footer />

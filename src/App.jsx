@@ -3,22 +3,29 @@ import 'twin.macro';
 import { Fragment, useContext, useEffect } from 'react';
 import { Route, Routes } from 'react-router-dom';
 
-import { useAuthMutation, useCreateOrderMutation, useGetDataQuery } from './app/api/application';
-import { pathnames } from './app/utils/pathnames';
+import {
+  useAuthMutation,
+  useChangeStatusMutation,
+  useCreateOrderMutation,
+  useGetDataQuery,
+  useGetOrdersQuery
+} from './app/api/application';
 import { ThemeContext } from './contexts/theme-context';
 import MainPage from './pages/main-page';
 import Layout from './views/layout';
 
 function App() {
+  const { data: orders } = useGetOrdersQuery();
   const { data } = useGetDataQuery();
   const { theme, setTheme } = useContext(ThemeContext);
-
+  const [changeStatus] = useChangeStatusMutation();
   const [createOrder] = useCreateOrderMutation();
   const [auth] = useAuthMutation();
 
   useEffect(() => {
     //
-    auth();
+    // changeStatus();
+    // auth();
     setTheme('light');
   }, [setTheme]);
 
@@ -26,7 +33,7 @@ function App() {
     <Fragment>
       <Routes>
         <Route element={<Layout />}>
-          <Route path={pathnames.main} element={<MainPage />} />
+          <Route path={'/'} element={<MainPage />} />
         </Route>
       </Routes>
     </Fragment>

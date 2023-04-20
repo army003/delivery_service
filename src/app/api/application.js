@@ -31,10 +31,24 @@ const applicationApi = api.injectEndpoints({
       query: () => ({
         url: `${APIUrl}/auth/`,
         method: 'POST',
-        body: { phone_number: '+77082994295', password: '1111' }
+        body: { phone_number: '+77082994296', password: '1111' }
+      })
+    }),
+    changeStatus: build.mutation({
+      query: delivery_status => ({
+        url: `${APIUrl}/change-status/`,
+        method: 'PATCH',
+        body: { delivery_status: 'IN_PROGRESS', id: 3 }
+      })
+    }),
+    getOrders: build.query({
+      query: () => ({
+        url: `${APIUrl}/orders`,
+        method: 'GET'
       })
     })
   })
 });
 
-export const { useGetDataQuery, useCreateOrderMutation, useAuthMutation } = applicationApi;
+export const { useGetDataQuery, useCreateOrderMutation, useAuthMutation, useChangeStatusMutation, useGetOrdersQuery } =
+  applicationApi;
