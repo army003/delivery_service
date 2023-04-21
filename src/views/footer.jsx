@@ -9,7 +9,7 @@ import Logo from '@/assets/logo.png';
 import { SubBody } from '@/components';
 function Footer() {
   return (
-    <div tw='bg-secondary'>
+    <div tw='bg-secondary mt-20'>
       <div tw='max-w-[950px] mx-auto flex w-full justify-between py-10'>
         <div tw='opacity-40'>
           <img src={Logo} alt='logo' width={120} />

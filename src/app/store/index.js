@@ -7,6 +7,7 @@ import { api } from '@/app/api';
 import { notificationMiddleware } from '@/app/middlewares/notification';
 import authSlice from '@/app/store/slices/auth';
 import errorSlice from '@/app/store/slices/error';
+import orderSlice from '@/app/store/slices/order';
 
 const persistConfig = {
   key: 'root',
@@ -19,6 +20,7 @@ export const rootReducer = () => {
   return combineReducers({
     auth: authSlice,
     errors: errorSlice,
+    order: orderSlice,
     [api.reducerPath]: api.reducer
   });
 };

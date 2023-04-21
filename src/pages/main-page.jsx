@@ -1,29 +1,50 @@
+/* eslint-disable react/jsx-key */
 import 'twin.macro';
 
-import React from 'react';
+import React, { useState } from 'react';
+import tw from 'twin.macro';
 
+import { useGetSuppliersQuery } from '@/app/api/application';
 import Distributor from '@/assets/distributor.jpg';
 import Importer from '@/assets/impoter.jpg';
 import Manufacturer from '@/assets/manufacturer.jpg';
-import { SubTitle } from '@/components';
+import { Button, Caption, Modal, SubBody, SubTitle, Title } from '@/components';
 function MainPage() {
+  const [open, setOpen] = useState(false);
+  const [activeSupplier, setActiveSupplier] = useState(null);
+  const [activeCompany, setActiveCompany] = useState(null);
+  const { data: suppliersData } = useGetSuppliersQuery(
+    { supplier_type: activeSupplier?.type },
+    { skip: !activeSupplier }
+  );
+  const suppliers = [
+    { type: 'manufacturer', img: Manufacturer, title: 'Manufacturer' },
+    { type: 'importer', img: Importer, title: 'Importer' },
+    { type: 'distributor', img: Distributor, title: 'Distributor' }
+  ];
   const items = ['Товар', 'Товар', 'Товар', 'Товар', 'Товар'];
+  const handleClick = item => {
+    setOpen(true);
+    setActiveSupplier(item);
+  };
+
+  console.log('data', suppliersData);
   return (
     <div tw='flex flex-col gap-10'>
-      <div tw='flex gap-5 font-bold '>
-        <section tw='w-full rounded-lg bg-secondary cursor-pointer hover:shadow-2xl transition-shadow relative '>
-          <img
-            src={Manufacturer}
-            alt=''
-            tw='rounded-lg absolute hover:transform hover:-translate-y-4 transition-transform'
-          />
-        </section>
-        <section tw='w-full rounded-lg bg-secondary  cursor-pointer hover:shadow-xl transition-shadow'>
+      <div tw='flex gap-5'>
+        {suppliers?.map(item => (
+          <button onClick={() => handleClick(item)} key={item.type}>
+            <section tw='w-full rounded-lg bg-secondary cursor-pointer hover:shadow-2xl transition-shadow relative'>
+              <img src={item?.img} alt='' tw='rounded-lg hover:transform hover:-translate-y-4 transition-transform' />
+            </section>
+          </button>
+        ))}
+        {/* <section tw='w-full rounded-lg bg-secondary  cursor-pointer hover:shadow-xl transition-shadow'>
           <img src={Importer} alt='' tw='rounded-lg  hover:transform hover:-translate-y-4 transition-transform' />
         </section>
         <section tw='w-full rounded-lg bg-secondary cursor-pointer hover:shadow-xl transition-shadow'>
           <img src={Distributor} alt='' tw='rounded-lg  hover:transform hover:-translate-y-4 transition-transform' />
-        </section>
+        </section> */}
       </div>
       <div>
         <SubTitle text={'Название категории'} variant={'bold'} />
@@ -49,6 +70,38 @@ function MainPage() {
           ))}
         </div>
       </div>
+      <Modal open={open} setOpen={setOpen} twStyle={tw`rounded-2xl`}>
+        <div tw='flex flex-col gap-5'>
+          <Title text={`Choose ${activeSupplier?.title}`} variant={'bold'} />
+          {activeSupplier?.type === 'importer' && <SubBody text={'OC - Origin Country'} />}
+
+          <div tw='grid grid-cols-3 gap-2'>
+            {suppliersData?.map(item => (
+              // eslint-disable-next-line jsx-a11y/no-static-element-interactions
+              <div
+                key={item.id}
+                tw='border border-black py-2 px-3 rounded-md cursor-pointer'
+                onClick={() => setActiveCompany(item.id)}
+                css={[activeCompany === item.id && tw`bg-black transition-colors text-white`]}
+              >
+                <SubBody text={item?.title} variant={'bold'} />
+                {item?.supplier_type === 'manufacturer' && (
+                  <Caption text={`Product: ${item?.product_type}`} twStyle={tw`text-secondary`} variant={'bold'} />
+                )}
+                {item?.supplier_type === 'importer' && (
+                  <Caption text={`OC: ${item?.origin_country}`} twStyle={tw`text-secondary`} variant={'bold'} />
+                )}
+                {item?.supplier_type === 'distributor' && (
+                  <Caption text={`Region: ${item?.region}`} twStyle={tw`text-secondary`} variant={'bold'} />
+                )}
+              </div>
+            ))}
+          </div>
+          <Button variant={'secondary'} disabled={!activeCompany}>
+            Choose
+          </Button>
+        </div>
+      </Modal>
     </div>
   );
 }

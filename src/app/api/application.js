@@ -46,9 +46,22 @@ const applicationApi = api.injectEndpoints({
         url: `${APIUrl}/orders`,
         method: 'GET'
       })
+    }),
+    getSuppliers: build.query({
+      query: supplier_type => ({
+        url: `${APIUrl}/suppliers`,
+        method: 'GET',
+        params: supplier_type
+      })
     })
   })
 });
 
-export const { useGetDataQuery, useCreateOrderMutation, useAuthMutation, useChangeStatusMutation, useGetOrdersQuery } =
-  applicationApi;
+export const {
+  useGetDataQuery,
+  useCreateOrderMutation,
+  useAuthMutation,
+  useChangeStatusMutation,
+  useGetOrdersQuery,
+  useGetSuppliersQuery
+} = applicationApi;

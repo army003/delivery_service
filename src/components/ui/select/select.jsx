@@ -26,9 +26,9 @@ const Select = ({
     control: provided => [
       { ...provided },
       {
-        ...tw`bg-input font-normal text-s14  rounded-2xl px-3 py-3 pl-5 shadow-none border border-transparent hover:border-transparent`
+        ...tw`bg-secondary font-normal text-s14  rounded-2xl px-3 py-3 pl-5 shadow-none border border-transparent hover:border-transparent`
       },
-      { ...tw`focus-within:border-input-active` },
+      { ...tw`focus-within:border-black` },
       icon && { ...tw`pl-10` }
     ],
     indicatorSeparator: provided => ({ ...provided, ...tw`hidden` }),

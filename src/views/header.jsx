@@ -2,7 +2,7 @@ import 'twin.macro';
 
 import React from 'react';
 import { useForm } from 'react-hook-form';
-import { CiSearch, CiShoppingCart } from 'react-icons/ci';
+import { CiSearch } from 'react-icons/ci';
 
 import Logo from '@/assets/logo.png';
 import { Input2 } from '@/components';
@@ -19,7 +19,7 @@ function Header() {
           <Input2 control={control} name='search' placeholder={'Поиск'} />
         </div>
         <div tw='relative'>
-          <CiShoppingCart color='#000' size={40} tw='cursor-pointer' />
+          {/* <CiShoppingCart color='#000' size={40} tw='cursor-pointer' /> */}
           {/* <span tw='bg-secondary border-[1px] border-black w-[23px] h-[23px] rounded-full absolute flex justify-center items-center -top-0 -right-1'>
             2
           </span> */}

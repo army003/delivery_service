@@ -12,11 +12,11 @@ import { Caption } from '@/components/ui/caption/caption';
 // ButtonVariant = 'primary' | 'ghost' | 'secondary' | 'text' | 'link' | 'download' ;
 
 const buttonVariants = {
-  primary: tw`max-w-button bg-button text-white rounded-s30 shadow-button hover:bg-button-hover transition-colors disabled:bg-button`,
+  primary: tw`max-w-button border border-black  bg-black text-white rounded-s30 hover:text-black hover:bg-white transition-colors `,
   link: tw`text-green p-0 active:text-link-hover hover:text-link-hover disabled:text-green max-w-none w-auto min-w-0`,
   text: tw`text-link rounded-s20 py-4 active:text-link-hover hover:text-link-hover disabled:text-green`,
-  ghost: tw`border border-green bg-selector text-green rounded-s20 py-4 hover:border-button-hover active:text-green-middle disabled:border-button disabled:text-green`,
-  secondary: tw`bg-button text-white rounded-s20 py-4 shadow-button hover:bg-button-hover transition-colors disabled:bg-button`,
+  ghost: tw`border border-green bg-selector text-green rounded-s20 py-4 hover:border-button-hover active:text-green-middle`,
+  secondary: tw`border border-black bg-black text-white rounded-s20 py-4 hover:bg-white hover:text-black transition-colors `,
   download: tw`bg-secondary py-3 w-full min-w-0 rounded-2xl hover:border-button leading-s18`,
   shadow: tw`border border-dark text-green rounded-s20 py-4 hover:border-button-hover active:text-green-middle disabled:border-button disabled:text-green`
 };
