@@ -11,8 +11,8 @@ function Header() {
   return (
     <div tw='bg-secondary py-3 shadow-sm '>
       <div tw='max-w-[950px] mx-auto flex w-full items-center justify-between'>
-        <div>
-          <img src={Logo} alt='logo' width={120} />
+        <div tw='rotate-45'>
+          <img src={Logo} alt='logo' width={50} />
         </div>
         <div tw='bg-primary rounded-2xl flex items-center px-5 w-[300px]'>
           <CiSearch size={30} />

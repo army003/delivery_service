@@ -3,28 +3,11 @@ import { APIUrl } from './api-url';
 
 const applicationApi = api.injectEndpoints({
   endpoints: build => ({
-    getData: build.query({
-      query: (product_type = 'food') => ({
-        url: `${APIUrl}/products/${product_type}`,
-        method: 'GET'
-      })
-    }),
     createOrder: build.mutation({
-      query: () => ({
+      query: data => ({
         url: `${APIUrl}/create-order/`,
         method: 'POST',
-        body: {
-          id: 12,
-          customer_id: 1,
-          product_id: 1,
-          delivery_date: '2023-04-20',
-          delivery_time: '10:00:00',
-          quantity: 10,
-          price_unit: 9.99,
-          supplier_id: 1,
-          departure_date: '2023-04-19',
-          arrival_date: '2023-04-20'
-        }
+        body: data
       })
     }),
     auth: build.mutation({
@@ -53,15 +36,38 @@ const applicationApi = api.injectEndpoints({
         method: 'GET',
         params: supplier_type
       })
+    }),
+    getProducts: build.query({
+      query: supplier_id => ({
+        url: `${APIUrl}/products`,
+        method: 'GET',
+        params: { supplier_id }
+      })
+    }),
+    getProduct: build.query({
+      query: id => ({
+        url: `${APIUrl}/product`,
+        method: 'GET',
+        params: { id }
+      })
+    }),
+    createCustomer: build.mutation({
+      query: ({ name, address, number }) => ({
+        url: `${APIUrl}/create-customer`,
+        method: 'POST',
+        body: { name, address, number }
+      })
     })
   })
 });
 
 export const {
-  useGetDataQuery,
+  useGetProductsQuery,
   useCreateOrderMutation,
   useAuthMutation,
   useChangeStatusMutation,
   useGetOrdersQuery,
-  useGetSuppliersQuery
+  useGetSuppliersQuery,
+  useGetProductQuery,
+  useCreateCustomerMutation
 } = applicationApi;

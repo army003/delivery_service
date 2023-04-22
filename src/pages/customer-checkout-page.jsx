@@ -1,25 +1,38 @@
 import 'twin.macro';
 
 import React from 'react';
+import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { ClipLoader } from 'react-spinners';
 
+import { useCreateCustomerMutation } from '@/app/api/application';
 import { getOrderDetail, setCustomerInfo } from '@/app/store/slices/order';
 import { BigTitle, Button, Input2, Title } from '@/components';
 
 function CustomerCheckoutPage() {
   const { control, getValues } = useForm({});
+  const [createCustomer, { data, isSuccess }] = useCreateCustomerMutation();
   const order_detail = useSelector(getOrderDetail);
+  const product_id = useLocation().pathname.split('/')[2];
+
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const handleClickNext = () => {
     const values = getValues();
-    dispatch(setCustomerInfo(values));
-    navigate('/product/5/delivery-info');
+    createCustomer(values);
   };
+
+  useEffect(() => {
+    if (isSuccess) {
+      const values = getValues();
+      dispatch(setCustomerInfo(values));
+      navigate(`/product/${product_id}/delivery-info`, { state: { customer_id: data?.id } });
+    }
+  }, [isSuccess]);
+
   return (
     <div tw='flex flex-col gap-7 w-[45%]'>
       {order_detail ? (
@@ -31,7 +44,7 @@ function CustomerCheckoutPage() {
           <div tw='bg-secondary w-full p-5 rounded-2xl flex flex-col gap-2'>
             <Input2 name='name' control={control} label={'Name'} placeholder={'Insert the name'} />
             <Input2
-              name='mobile_number'
+              name='number'
               control={control}
               label={'Mobile number'}
               mask={'+7 999 999 99 99'}

@@ -5,18 +5,23 @@ import React from 'react';
 import { useState } from 'react';
 import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
+import { BsBuildings } from 'react-icons/bs';
+import { GoLocation } from 'react-icons/go';
 import { useDispatch, useSelector } from 'react-redux';
-import { Outlet, useNavigate } from 'react-router-dom';
+import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 import tw from 'twin.macro';
 
+import { useGetProductQuery } from '@/app/api/application';
 import { getOrderMaked, setOrder, setOrderDetail } from '@/app/store/slices/order';
 import Sofa from '@/assets/sofa.png';
-import { BigTitle, Button, Select, SubTitle, Title } from '@/components';
+import { BigTitle, BodyText, Button, Select, SubTitle, Title } from '@/components';
 
 function ProductPage() {
   const [price, setPrice] = useState(0);
   const { control, watch } = useForm({});
   const dispatch = useDispatch();
+  const product_id = useLocation().pathname.split('/')[2];
+  const { data } = useGetProductQuery(product_id);
 
   const isOrderMaked = useSelector(getOrderMaked);
   const navigate = useNavigate();
@@ -29,36 +34,63 @@ function ProductPage() {
   ];
   useEffect(() => {
     if (watch('quantity')) {
-      const price = parseInt(watch('quantity')) * 500000;
+      const price = parseInt(watch('quantity')) * data?.data[0].price;
       setPrice(price);
     }
   }, [watch('quantity')]);
 
   const handleClickOrder = () => {
     dispatch(setOrder({ order_maked: true }));
-    dispatch(setOrderDetail({ name: 'Chair', id: 2, quantity: 1 }));
+    dispatch(
+      setOrderDetail({
+        name: 'Chair',
+        id: data?.data[0].id,
+        quantity: watch('quantity'),
+        price: price,
+        supplier_id: data?.data[0].supplier_id
+      })
+    );
+    navigate(`/product/${product_id}/customer-info`);
+  };
+  const transformText = string => {
+    const firstLetter = String(string).slice(0, 1).toLocaleUpperCase();
+    const next = String(string).slice(1, string?.length);
+    return firstLetter + next;
   };
   return (
     <div tw='w-full flex justify-between'>
-      <div tw='w-[50%]'>
+      <div tw='w-[40%]'>
         <img src={Sofa} alt='' tw='rounded-2xl' />
       </div>
       {isOrderMaked ? (
         <Outlet />
       ) : (
-        <div tw='flex flex-col gap-7 w-[45%]'>
+        <div tw='flex flex-col gap-7 w-[50%]'>
           <div>
-            <BigTitle text={'Название продукта'} variant={'bold'} />
-            <Title text={'Тип продукта'} variant={'bold'} />
+            <BigTitle text={data?.data[0].name} variant={'bold'} />
+            <Title text={data?.data[0].class_name} variant={'bold'} />
           </div>
           <div tw='bg-black text-white shadow-2xl rounded-2xl max-w-[200px] px-5 py-3 flex justify-center'>
-            <Title text={'500 000 ₸'} variant={'bold'} />
+            <Title text={`${data?.data[0].price} ₸`} variant={'bold'} />
           </div>
-          <div tw='bg-secondary p-10 font-bold'>Информация про поставщика</div>
-          <Select options={quantity} control={control} name={'quantity'} placeholder={'Выберите количество'} />
+          <div tw='bg-secondary p-10 font-bold'>
+            <SubTitle text={transformText(data?.data[0].supplier_type)} variant={'bold'} />
+            <div tw='flex flex-col'>
+              <div tw='flex items-center gap-1'>
+                <BsBuildings />
+                <BodyText text={`${data?.data[0].title}`} />
+              </div>
+              <div tw='flex items-center gap-1'>
+                <GoLocation /> <BodyText text={<span>{data?.data[0].address}</span>} />
+              </div>
+            </div>
+          </div>
+          <Select options={quantity} control={control} name={'quantity'} placeholder={'Choose quantity'} />
           <SubTitle text={`Final Price: ${price} ₸`} variant={'bold'} twStyle={tw`ml-2 text-secondary`} />
           <div tw='flex gap-5' onClick={handleClickOrder}>
-            <Button variant={'secondary'}>Order</Button>
+            <Button variant={'secondary'} disabled={!watch('quantity')}>
+              Order
+            </Button>
           </div>
         </div>
       )}

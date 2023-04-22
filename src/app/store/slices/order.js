@@ -5,7 +5,9 @@ const initialState = {
   orderDetail: {
     name: null,
     quantity: 0,
-    id: null
+    id: null,
+    price: null,
+    supplier_id: null
   },
   customerInfo: {
     full_name: null,
@@ -18,7 +20,7 @@ const initialState = {
     delivery_date: null,
     delivery_time: null,
     quantity: null,
-    price_unit: null,
+    price: null,
     supplier_id: null,
     depature_date: null,
     arrival_date: null,

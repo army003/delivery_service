@@ -2,6 +2,10 @@
 import 'twin.macro';
 
 import React, { useState } from 'react';
+import { useEffect } from 'react';
+import { useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+import { PURGE } from 'redux-persist';
 import tw from 'twin.macro';
 
 import { useGetSuppliersQuery } from '@/app/api/application';
@@ -9,10 +13,13 @@ import Distributor from '@/assets/distributor.jpg';
 import Importer from '@/assets/impoter.jpg';
 import Manufacturer from '@/assets/manufacturer.jpg';
 import { Button, Caption, Modal, SubBody, SubTitle, Title } from '@/components';
+
 function MainPage() {
   const [open, setOpen] = useState(false);
   const [activeSupplier, setActiveSupplier] = useState(null);
   const [activeCompany, setActiveCompany] = useState(null);
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
   const { data: suppliersData } = useGetSuppliersQuery(
     { supplier_type: activeSupplier?.type },
     { skip: !activeSupplier }
@@ -28,7 +35,16 @@ function MainPage() {
     setActiveSupplier(item);
   };
 
-  console.log('data', suppliersData);
+  const handleNavigate = () => {
+    navigate(`/products/${activeCompany}`, {
+      state: { supplier: suppliersData?.find(item => item.supplier_id === activeCompany) }
+    });
+  };
+
+  useEffect(() => {
+    dispatch({ type: PURGE, result: () => null });
+  }, []);
+
   return (
     <div tw='flex flex-col gap-10'>
       <div tw='flex gap-5'>
@@ -81,8 +97,11 @@ function MainPage() {
               <div
                 key={item.id}
                 tw='border border-black py-2 px-3 rounded-md cursor-pointer'
-                onClick={() => setActiveCompany(item.id)}
-                css={[activeCompany === item.id && tw`bg-black transition-colors text-white`]}
+                onClick={() => {
+                  setActiveCompany(item.supplier_id);
+                  console.log(item);
+                }}
+                css={[activeCompany === item.supplier_id && tw`bg-black transition-colors text-white`]}
               >
                 <SubBody text={item?.title} variant={'bold'} />
                 {item?.supplier_type === 'manufacturer' && (
@@ -97,7 +116,7 @@ function MainPage() {
               </div>
             ))}
           </div>
-          <Button variant={'secondary'} disabled={!activeCompany}>
+          <Button variant={'secondary'} disabled={!activeCompany} onClick={handleNavigate}>
             Choose
           </Button>
         </div>

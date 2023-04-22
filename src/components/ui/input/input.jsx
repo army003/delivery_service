@@ -110,7 +110,7 @@ const Input2 = ({ isRequired = false, ...props }) => {
   };
 
   return (
-    <span css={[tw`flex flex-col space-y-1 mt-1 min-w-0 max-w-full w-full relative`, props.disabled && tw`opacity-50`]}>
+    <span css={[tw`flex flex-col space-y-1 mt-1 min-w-0 max-w-full w-full relative`, props.disabled && tw``]}>
       {props.label && (
         <label htmlFor={name} tw='ml-s13 text-sm '>
           <SubBody
