@@ -70,6 +70,7 @@ function MainPage() {
           ))}
         </div>
       </div>
+      <img src='https://drive.google.com/file/d/1d5ZnT9Tp_TYxWbkr6q_cuTBCywF6OK1m/view?usp=share_link' alt='' />
       <div>
         <SubTitle text={'Название категории'} variant={'bold'} />
         <div tw='flex gap-5 font-bold mt-5'>
