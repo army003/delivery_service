@@ -1,7 +1,7 @@
 import { api } from '.';
 import { APIUrl } from './api-url';
 
-const applicationApi = api.injectEndpoints({
+export const applicationApi = api.injectEndpoints({
   endpoints: build => ({
     createOrder: build.mutation({
       query: data => ({
@@ -11,10 +11,10 @@ const applicationApi = api.injectEndpoints({
       })
     }),
     auth: build.mutation({
-      query: () => ({
+      query: data => ({
         url: `${APIUrl}/auth/`,
         method: 'POST',
-        body: { phone_number: '+77082994296', password: '1111' }
+        body: data
       })
     }),
     changeStatus: build.mutation({

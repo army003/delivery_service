@@ -34,7 +34,7 @@ function ProductPage() {
   ];
   useEffect(() => {
     if (watch('quantity')) {
-      const price = parseInt(watch('quantity')) * data?.data[0].price;
+      const price = parseInt(watch('quantity')) * data?.data[0]?.price;
       setPrice(price);
     }
   }, [watch('quantity')]);
@@ -67,21 +67,21 @@ function ProductPage() {
       ) : (
         <div tw='flex flex-col gap-7 w-[50%]'>
           <div>
-            <BigTitle text={data?.data[0].name} variant={'bold'} />
-            <Title text={data?.data[0].class_name} variant={'bold'} />
+            <BigTitle text={data?.data[0]?.name} variant={'bold'} />
+            <Title text={data?.data[0]?.class_name} variant={'bold'} />
           </div>
           <div tw='bg-black text-white shadow-2xl rounded-2xl max-w-[200px] px-5 py-3 flex justify-center'>
-            <Title text={`${data?.data[0].price} ₸`} variant={'bold'} />
+            <Title text={`${data?.data[0]?.price} ₸`} variant={'bold'} />
           </div>
           <div tw='bg-secondary p-10 font-bold'>
-            <SubTitle text={transformText(data?.data[0].supplier_type)} variant={'bold'} />
+            <SubTitle text={transformText(data?.data[0]?.supplier_type)} variant={'bold'} />
             <div tw='flex flex-col'>
               <div tw='flex items-center gap-1'>
                 <BsBuildings />
-                <BodyText text={`${data?.data[0].title}`} />
+                <BodyText text={`${data?.data[0]?.title}`} />
               </div>
               <div tw='flex items-center gap-1'>
-                <GoLocation /> <BodyText text={<span>{data?.data[0].address}</span>} />
+                <GoLocation /> <BodyText text={<span>{data?.data[0]?.address}</span>} />
               </div>
             </div>
           </div>

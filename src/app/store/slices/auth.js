@@ -1,16 +1,18 @@
 import { createSelector, createSlice } from '@reduxjs/toolkit';
-import { PURGE } from 'redux-persist';
+import jwt_decode from 'jwt-decode';
 
 const initialState = {
   isAuth: false,
   access: null,
-  refresh: null
+  refresh: null,
+  userInfo: {}
 };
 
 const baseSelector = state => state.auth;
 
 export const getAccessToken = createSelector([baseSelector], state => state.access);
 export const getIsAuth = createSelector([baseSelector], state => state.isAuth);
+export const getUserInfo = createSelector([baseSelector], state => state.userInfo);
 
 const authSlice = createSlice({
   name: 'auth',
@@ -19,12 +21,11 @@ const authSlice = createSlice({
     setAuth: (state, { payload }) => {
       state.isAuth = true;
       state.access = payload.access;
-      state.refresh = payload.refresh;
+      const userData = jwt_decode(payload.access);
+      state.userInfo = userData;
     }
   },
-  extraReducers: builder => {
-    builder.addCase(PURGE, () => initialState);
-  }
+  extraReducers: builder => {}
 });
 
 export const { setAuth } = authSlice.actions;

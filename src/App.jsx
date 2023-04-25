@@ -8,6 +8,7 @@ import { ThemeContext } from './contexts/theme-context';
 import AllProductsPage from './pages/all-products-page';
 import ConfirmationPage from './pages/confirmation-page';
 import CourierAuth from './pages/courier/auth';
+import CourierMain from './pages/courier/main';
 import CustomerCheckoutPage from './pages/customer-checkout-page';
 import MainPage from './pages/main-page';
 import OrderCheckoutPage from './pages/order-checkout-page';
@@ -40,6 +41,7 @@ function App() {
           </Route>
         </Route>
         <Route path={'/auth'} element={<CourierAuth />} />
+        <Route path={'/delivery'} element={<CourierMain />} />
       </Routes>
     </Fragment>
   );

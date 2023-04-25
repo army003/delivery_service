@@ -3,15 +3,15 @@ import 'twin.macro';
 
 import React from 'react';
 import { useState } from 'react';
+import { useEffect } from 'react';
 import { AiOutlineCheck } from 'react-icons/ai';
 import { useSelector } from 'react-redux';
 import { ClipLoader } from 'react-spinners';
 import tw from 'twin.macro';
 
+import { useCreateOrderMutation } from '@/app/api/application';
 import { getCustomerDetail, getDeliveryDetail, getOrderDetail } from '@/app/store/slices/order';
 import { BigTitle, BodyText, Button, Modal, SubTitle, Title } from '@/components';
-import { useCreateOrderMutation } from '@/app/api/application';
-import { useEffect } from 'react';
 
 function ConfirmationPage() {
   const [open, setOpen] = useState(false);
