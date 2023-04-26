@@ -10,8 +10,14 @@ import { useSelector } from 'react-redux';
 
 import { getIsAuth, getUserInfo } from '@/app/store/slices/auth';
 import Logo from '@/assets/logo.png';
-import { Input2, SubBody } from '@/components';
-function Header() {
+import { Input2, Selector, SubBody } from '@/components';
+
+const items = [
+  { title: 'All aplications', value: 'all' },
+  { title: 'My aplications', value: 'my' }
+];
+
+function Header({ activeTab, setActiveTab }) {
   const { control } = useForm();
   const isAuth = useSelector(getIsAuth);
   const userInfo = useSelector(getUserInfo);
@@ -33,19 +39,23 @@ function Header() {
           </div>
         )}
         {isAuth && (
-          <div tw='bg-input p-3 rounded-lg flex gap-2 items-center'>
-            <AiOutlineUser size={40} />
-            <div tw=' flex flex-col'>
-              <SubBody text={userInfo?.username} variant={'bold'} />
-              <SubBody text={userInfo?.email} variant={'bold'} />
-              <SubBody text={userInfo?.mobile_phone} variant={'bold'} />
+          <>
+            <div tw='bg-input p-3 rounded-lg flex gap-2 items-center'>
+              <AiOutlineUser size={40} />
+              <div tw=' flex flex-col'>
+                <SubBody text={userInfo?.username} variant={'bold'} />
+                <SubBody text={userInfo?.email} variant={'bold'} />
+                <SubBody text={userInfo?.mobile_phone} variant={'bold'} />
+              </div>
             </div>
-          </div>
+            <div>
+              <Selector items={items} getActiveItem={setActiveTab} defaultActiveItem={'all'} />
+            </div>
+            <div tw='relative cursor-pointer'>
+              <MdExitToApp size={30} />
+            </div>
+          </>
         )}
-
-        <div tw='relative cursor-pointer'>
-          <MdExitToApp size={30} />
-        </div>
       </div>
     </div>
   );

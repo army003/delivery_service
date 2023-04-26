@@ -52,7 +52,13 @@ function CourierAuth() {
             mask={'+7 999 999 99 99'}
             placeholder={'Insert the mobile number'}
           />
-          <Input2 name='password' control={control} label={'Password'} placeholder={'Insert the password'} />
+          <Input2
+            type='password'
+            name='password'
+            control={control}
+            label={'Password'}
+            placeholder={'Insert the password'}
+          />
         </div>
         <Button variant={'secondary'} twStyle={tw`mt-5`} onClick={handleAuth}>
           Sign In

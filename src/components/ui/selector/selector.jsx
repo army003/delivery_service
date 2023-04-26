@@ -29,11 +29,11 @@ const styles = {
   ],
   button: ({ isActive, small, type, isPlate, disabled }) => {
     return [
-      tw` flex justify-between items-center flex-wrap border border-grey w-full min-w-0 py-2 px-4 hover:border-button leading-s18`,
+      tw` flex justify-between items-center flex-wrap w-full min-w-0 py-2 px-4 hover:border-button leading-s18`,
       type === 'primary' ? tw`rounded-lg` : tw`rounded-md`,
-      isActive && tw`bg-selector border-green hover:border-green`,
+      isActive && tw`bg-white text-white`,
       small && tw`w-[3.79rem] px-3 py-2`,
-      isPlate && tw`h-[56px] py-0`,
+      isPlate && tw`h-[26px] py-0`,
       disabled && tw`border-0 cursor-not-allowed`,
       disabled && isActive && tw`border border-green`
     ];
@@ -87,7 +87,11 @@ const Selector = ({
               >
                 <div css={styles.textContainer({ icon: item.icon })}>
                   {!small ? (
-                    <SubBody text={item.title} variant='bold' twStyle={isActive ? tw`text-link` : tw`text-primary`} />
+                    <SubBody
+                      text={item.title}
+                      variant='bold'
+                      twStyle={isActive ? tw`text-[#B47AC4]` : tw`text-primary`}
+                    />
                   ) : (
                     <BodyText
                       text={item.title}
