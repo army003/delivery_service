@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/no-static-element-interactions */
 import 'twin.macro';
 
 import React from 'react';
@@ -6,11 +7,13 @@ import { AiOutlineUser } from 'react-icons/ai';
 import { CiSearch } from 'react-icons/ci';
 import { MdExitToApp } from 'react-icons/md';
 import { TbTruckDelivery } from 'react-icons/tb';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 
-import { getIsAuth, getUserInfo } from '@/app/store/slices/auth';
+import { getIsAuth, getUserInfo, setAuth, signOut } from '@/app/store/slices/auth';
 import Logo from '@/assets/logo.png';
 import { Input2, Selector, SubBody } from '@/components';
+import { PURGE } from 'redux-persist';
 
 const items = [
   { title: 'All aplications', value: 'all' },
@@ -21,14 +24,32 @@ function Header({ activeTab, setActiveTab }) {
   const { control } = useForm();
   const isAuth = useSelector(getIsAuth);
   const userInfo = useSelector(getUserInfo);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const handleSignOut = () => {
+    dispatch(signOut());
+    navigate('/auth');
+  };
 
   return (
     <div tw='bg-secondary py-3 shadow-sm '>
       <div tw='max-w-[950px] mx-auto flex w-full items-center justify-between'>
         {isAuth ? (
-          <TbTruckDelivery size={40} />
+          <button
+            onClick={() => {
+              navigate('/delivery');
+            }}
+          >
+            <TbTruckDelivery size={40} />
+          </button>
         ) : (
-          <div tw='rotate-45'>
+          <div
+            tw='rotate-45'
+            onClick={() => {
+              navigate('/');
+            }}
+          >
             <img src={Logo} alt='logo' width={50} />
           </div>
         )}
@@ -51,7 +72,7 @@ function Header({ activeTab, setActiveTab }) {
             <div>
               <Selector items={items} getActiveItem={setActiveTab} defaultActiveItem={'all'} />
             </div>
-            <div tw='relative cursor-pointer'>
+            <div tw='relative cursor-pointer' onClick={handleSignOut}>
               <MdExitToApp size={30} />
             </div>
           </>

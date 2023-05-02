@@ -50,10 +50,16 @@ const orderSlice = createSlice({
     },
     setDelveryInfo: (state, { payload }) => {
       state.deliveryInfo = payload;
+    },
+    reset: state => {
+      state.orderMaked = false;
+      state.orderDetail = null;
+      state.customerInfo = null;
+      state.deliveryInfo = null;
     }
   }
 });
 
-export const { setOrder, setOrderDetail, setCustomerInfo, setDelveryInfo } = orderSlice.actions;
+export const { setOrder, setOrderDetail, setCustomerInfo, setDelveryInfo, reset } = orderSlice.actions;
 
 export default orderSlice.reducer;

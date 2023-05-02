@@ -29,15 +29,15 @@ function AllProductsPage() {
     <div>
       <Title text={`${String(supplier.supplier_type).toUpperCase()}: ${supplier?.title}`} variant={'bold'} />
       {isLoading && <ClipLoader />}
-      <div tw='grid grid-cols-5 mt-5'>
+      <div tw='grid grid-cols-5 mt-5 gap-3'>
         {products?.map(item => (
           <div
             key={item.id}
-            tw='overflow-hidden rounded-2xl bg-secondary flex flex-col justify-between max-w-[200px] cursor-pointer'
-            onClick={() => navigate(`/product/${item.id}`)}
+            tw='overflow-hidden rounded-2xl bg-secondary flex flex-col w-full justify-between cursor-pointer'
+            onClick={() => navigate(`/product/${item.product_id}`)}
           >
-            <div tw='overflow-hidden h-[200px]'>
-              <img src={Sofa} alt={item.name} />
+            <div tw='overflow-hidden h-[200px] w-[300px] relative'>
+              <img src={`..${item?.data}`} alt={item.name} tw='absolute ' />
             </div>
             <div tw='bg-secondary p-5 flex flex-col gap-2 border border-black rounded-b-2xl'>
               <BodyText text={item.name} variant={'bold'} />

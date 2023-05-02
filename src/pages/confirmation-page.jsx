@@ -5,13 +5,15 @@ import React from 'react';
 import { useState } from 'react';
 import { useEffect } from 'react';
 import { AiOutlineCheck } from 'react-icons/ai';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import { ClipLoader } from 'react-spinners';
 import tw from 'twin.macro';
 
 import { useCreateOrderMutation } from '@/app/api/application';
-import { getCustomerDetail, getDeliveryDetail, getOrderDetail } from '@/app/store/slices/order';
+import { getCustomerDetail, getDeliveryDetail, getOrderDetail, reset } from '@/app/store/slices/order';
 import { BigTitle, BodyText, Button, Modal, SubTitle, Title } from '@/components';
+import { PURGE } from 'redux-persist';
 
 function ConfirmationPage() {
   const [open, setOpen] = useState(false);
@@ -22,6 +24,8 @@ function ConfirmationPage() {
   const [orCheck, setOrCheck] = useState(false);
   const [delCheck, setDelCheck] = useState(false);
   const [createOrder, { isSuccess }] = useCreateOrderMutation();
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
   const customer_info = [
     { label: 'Name', value: customer.name },
     { label: 'Mobile number', value: customer.mobile_number },
@@ -134,8 +138,24 @@ function ConfirmationPage() {
       <Button variant={'secondary'} onClick={handleCreateOrder} disabled={!orCheck || !custCheck || !delCheck}>
         Order
       </Button>
-      <Modal open={open} setOpen={setOpen}>
-        <SubTitle text={'Order succesfully created!'} />
+      <Modal
+        open={open}
+        setOpen={setOpen}
+        twStyle={tw`rounded-2xl p-5`}
+        outsideClose={false}
+        withCloseIcon={false}
+        withBlur={true}
+      >
+        <SubTitle text={'Order succesfully created!'} variant={'bold'} />
+        <Button
+          variant={'secondary'}
+          onClick={() => {
+            dispatch(reset());
+            navigate('/');
+          }}
+        >
+          Home
+        </Button>
       </Modal>
     </div>
   );

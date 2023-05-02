@@ -23,11 +23,16 @@ const authSlice = createSlice({
       state.access = payload.access;
       const userData = jwt_decode(payload.access);
       state.userInfo = userData;
+    },
+    signOut: state => {
+      state.isAuth = false;
+      state.access = null;
+      state.userInfo = null;
     }
   },
   extraReducers: builder => {}
 });
 
-export const { setAuth } = authSlice.actions;
+export const { setAuth, signOut } = authSlice.actions;
 
 export default authSlice.reducer;

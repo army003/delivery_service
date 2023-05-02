@@ -25,9 +25,10 @@ export const applicationApi = api.injectEndpoints({
       })
     }),
     getOrders: build.query({
-      query: () => ({
+      query: courier_id => ({
         url: `${APIUrl}/orders`,
-        method: 'GET'
+        method: 'GET',
+        params: courier_id
       })
     }),
     getSuppliers: build.query({
@@ -57,6 +58,20 @@ export const applicationApi = api.injectEndpoints({
         method: 'POST',
         body: { name, address, number }
       })
+    }),
+    takeOrder: build.mutation({
+      query: ({ courier_id, id }) => ({
+        url: `${APIUrl}/take-order`,
+        method: 'PATCH',
+        body: { courier_id, id }
+      })
+    }),
+    orderDelivered: build.mutation({
+      query: ({ id }) => ({
+        url: `${APIUrl}/delivered`,
+        method: 'PATCH',
+        body: { id }
+      })
     })
   })
 });
@@ -69,5 +84,7 @@ export const {
   useGetOrdersQuery,
   useGetSuppliersQuery,
   useGetProductQuery,
-  useCreateCustomerMutation
+  useCreateCustomerMutation,
+  useTakeOrderMutation,
+  useOrderDeliveredMutation
 } = applicationApi;

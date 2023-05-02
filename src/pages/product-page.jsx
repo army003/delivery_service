@@ -60,7 +60,7 @@ function ProductPage() {
   return (
     <div tw='w-full flex justify-between'>
       <div tw='w-[40%]'>
-        <img src={Sofa} alt='' tw='rounded-2xl' />
+        <img src={`..${data?.data[0]?.data}`} alt='' tw='rounded-2xl' />
       </div>
       {isOrderMaked ? (
         <Outlet />
