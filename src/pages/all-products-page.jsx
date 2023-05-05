@@ -9,7 +9,6 @@ import { ClipLoader } from 'react-spinners';
 import { PURGE } from 'redux-persist';
 
 import { useGetProductsQuery } from '@/app/api/application';
-import Sofa from '@/assets/sofa.png';
 import { BodyText, SubBody, Title } from '@/components';
 
 function AllProductsPage() {

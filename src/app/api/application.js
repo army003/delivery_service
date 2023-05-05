@@ -38,6 +38,12 @@ export const applicationApi = api.injectEndpoints({
         params: supplier_type
       })
     }),
+    getCouriers: build.query({
+      query: () => ({
+        url: `${APIUrl}/couriers`,
+        method: 'GET'
+      })
+    }),
     getProducts: build.query({
       query: supplier_id => ({
         url: `${APIUrl}/products`,
@@ -86,5 +92,6 @@ export const {
   useGetProductQuery,
   useCreateCustomerMutation,
   useTakeOrderMutation,
-  useOrderDeliveredMutation
+  useOrderDeliveredMutation,
+  useGetCouriersQuery
 } = applicationApi;

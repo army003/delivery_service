@@ -10,10 +10,9 @@ import { TbTruckDelivery } from 'react-icons/tb';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 
-import { getIsAuth, getUserInfo, setAuth, signOut } from '@/app/store/slices/auth';
+import { getIsAdmin, getIsAuth, getUserInfo, signOut } from '@/app/store/slices/auth';
 import Logo from '@/assets/logo.png';
 import { Input2, Selector, SubBody } from '@/components';
-import { PURGE } from 'redux-persist';
 
 const items = [
   { title: 'All aplications', value: 'all' },
@@ -23,6 +22,7 @@ const items = [
 function Header({ activeTab, setActiveTab }) {
   const { control } = useForm();
   const isAuth = useSelector(getIsAuth);
+  const isAdmin = useSelector(getIsAdmin);
   const userInfo = useSelector(getUserInfo);
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -32,10 +32,12 @@ function Header({ activeTab, setActiveTab }) {
     navigate('/auth');
   };
 
+  console.log(isAdmin);
+
   return (
     <div tw='bg-secondary py-3 shadow-sm '>
       <div tw='max-w-[950px] mx-auto flex w-full items-center justify-between'>
-        {isAuth ? (
+        {isAuth || isAdmin ? (
           <button
             onClick={() => {
               navigate('/delivery');
@@ -53,7 +55,7 @@ function Header({ activeTab, setActiveTab }) {
             <img src={Logo} alt='logo' width={50} />
           </div>
         )}
-        {!isAuth && (
+        {!isAuth && !isAdmin && (
           <div tw='bg-primary rounded-2xl flex items-center px-5 w-[300px]'>
             <CiSearch size={30} />
             <Input2 control={control} name='search' placeholder={'Поиск'} />
@@ -72,10 +74,12 @@ function Header({ activeTab, setActiveTab }) {
             <div>
               <Selector items={items} getActiveItem={setActiveTab} defaultActiveItem={'all'} />
             </div>
-            <div tw='relative cursor-pointer' onClick={handleSignOut}>
-              <MdExitToApp size={30} />
-            </div>
           </>
+        )}
+        {(isAuth || isAdmin) && (
+          <div tw='relative cursor-pointer' onClick={handleSignOut}>
+            <MdExitToApp size={30} />
+          </div>
         )}
       </div>
     </div>

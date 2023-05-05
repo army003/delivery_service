@@ -5,6 +5,10 @@ import { Route, Routes } from 'react-router-dom';
 
 import { useAuthMutation, useChangeStatusMutation, useCreateOrderMutation } from './app/api/application';
 import { ThemeContext } from './contexts/theme-context';
+import AdminCouriersPage from './pages/admin/admin-couriers-page';
+import AdminLayout from './pages/admin/admin-layout';
+import AdminProfilePage from './pages/admin/admin-profile-page';
+import AdminSuppliers from './pages/admin/admin-suppliers';
 import AllProductsPage from './pages/all-products-page';
 import ConfirmationPage from './pages/confirmation-page';
 import CourierAuth from './pages/courier/auth';
@@ -42,6 +46,13 @@ function App() {
         </Route>
         <Route path={'/auth'} element={<CourierAuth />} />
         <Route path={'/delivery'} element={<CourierMain />} />
+        <Route element={<Layout />}>
+          <Route element={<AdminLayout />}>
+            <Route path={'/admin-profile'} element={<AdminProfilePage />} />
+            <Route path={'/admin-suppliers'} element={<AdminSuppliers />} />
+            <Route path={'/admin-couriers'} element={<AdminCouriersPage />} />
+          </Route>
+        </Route>
       </Routes>
     </Fragment>
   );
